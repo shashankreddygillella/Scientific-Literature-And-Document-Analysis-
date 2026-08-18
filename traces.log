@@ -1,0 +1,208 @@
+================================================================================
+MILESTONE 2 ADDENDUM — RAW TERMINAL TRACE LOG
+Scientific Literature & Document Intelligence — RAG QA System
+================================================================================
+
+--------------------------------------------------------------------------------
+TEST RUN 1 — 20-Question Set (Baseline vs. System Comparison)
+Document: RAG-Anything: All-in-One RAG Framework (arXiv:2510.12323)
+Captured: 13 Aug 2026, terminal log from Flask dev server (127.0.0.1:5000)
+--------------------------------------------------------------------------------
+
+127.0.0.1 - - [13/Aug/2026 13:19:32] "POST /chat-prepare HTTP/1.1" 200 -
+127.0.0.1 - - [13/Aug/2026 13:19:32] "GET /chat-history/conversations HTTP/1.1" 200 -
+127.0.0.1 - - [13/Aug/2026 13:19:32] "GET /chat-history/conversations/76/messages HTTP/1.1" 200 -
+[RETRIEVE] question: 'what is the file about'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document appears to be about a framework for representing heterogeneous multimodal content in a unified, retrieval-oriented abstraction, specifically designed to address the limitations of existin'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [13/Aug/2026 13:20:12] "POST /chat-query HTTP/1.1" 200 -
+
+[RETRIEVE] question: 'what is the date of this'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify the date.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [13/Aug/2026 13:26:43] "POST /chat-query HTTP/1.1" 200 -
+
+--------------------------------------------------------------------------------
+TEST RUN 2 — Full 20-Question Set, Terminal-Verified
+Document: RAG-Anything: All-in-One RAG Framework (arXiv:2510.12323)
+Captured: 15 Aug 2026, terminal log from Flask dev server (127.0.0.1:5000)
+--------------------------------------------------------------------------------
+
+127.0.0.1 - - [15/Aug/2026 11:09:28] "POST /chat-prepare HTTP/1.1" 200 -
+127.0.0.1 - - [15/Aug/2026 11:09:28] "GET /chat-history/conversations HTTP/1.1" 200 -
+127.0.0.1 - - [15/Aug/2026 11:09:28] "GET /chat-history/conversations/76/messages HTTP/1.1" 200 -
+127.0.0.1 - - [15/Aug/2026 11:09:34] "POST /chat-history/conversations HTTP/1.1" 200 -
+127.0.0.1 - - [15/Aug/2026 11:09:34] "GET /chat-history/conversations HTTP/1.1" 200 -
+
+[Q1] 'What problem does RAG-Anything aim to solve?'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'RAG-ANYTHING aims to address the fundamental gaps in current RAG frameworks by enabling comprehensive information understanding across all modalities of human knowledge representation, specifically fo'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:10:27] "POST /chat-query HTTP/1.1" 200 -
+
+[Q2] 'What is the main limitation of existing RAG frameworks, according to this paper'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The main limitation of existing RAG frameworks, according to this paper, is that they systematically exclude multimodal knowledge sources, such as plots, diagrams, market charts, radiological images, '
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:10:47] "POST /chat-query HTTP/1.1" 200 -
+
+[Q3] 'What does RAG-Anything propose instead of treating multimodal content as isolated data types?'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'RAG-Anything proposes reconceptualizing multimodal content as interconnected knowledge entities rather than isolated data types.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:11:21] "POST /chat-query HTTP/1.1" 200 -
+
+[Q4] 'What two benchmarks were used to validate RAG-Anything'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document clearly specifies this information in the Abstract section. According to the provided context, the two multimodal benchmarks used to validate RAG-Anything are: 1. Doc Bench 2. MMLong Ben'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:11:58] "POST /chat-query HTTP/1.1" 200 -
+
+[Q5] 'Who are the authors of this paper, and what institution are they affiliated with'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The authors of this paper are Zirui Guo, Xubin Ren, Lingrui Xu, Jiahao Zhang, and Chao Huang. They are affiliated with The University of Hong Kong.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:12:24] "POST /chat-query HTTP/1.1" 200 -
+
+[Q6] 'What are the three fundamental technical challenges of multimodal RAG described in the paper'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify this.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:13:07] "POST /chat-query HTTP/1.1" 200 -
+NOTE: In an earlier, separate chat-UI session (not terminal-logged), this same
+question produced a fabricated list of challenges instead of a refusal. This
+run-to-run inconsistency is discussed in the addendum slides as an observed
+finding (non-deterministic guardrail effectiveness across sessions).
+
+[Q7] 'Why does converting all multimodal content to text lose information, according to the paper'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the abstract, converting all multimodal content to textual descriptions introduces severe information loss because "visual elements such as charts, diagrams, and spatial layouts contain s'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:13:37] "POST /chat-query HTTP/1.1" 200 -
+
+[Q8] 'What is the "structure-aware decomposition challenge"'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The structure-aware decomposition challenge demands intelligent parsing of complex layouts, requiring specialized layout-aware parsing modules that can interpret document structure and preserve contex'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:14:06] "POST /chat-query HTTP/1.1" 200 -
+
+[Q9] 'What is the "cross-modal retrieval challenge"'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The cross-modal retrieval challenge necessitates sophisticated mechanisms that can navigate between different modalities, requiring cross-modal alignment systems capable of understanding semantic corr'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:14:35] "POST /chat-query HTTP/1.1" 200 -
+
+[Q10] 'What three real-world domains does the paper use to illustrate the need for multimodal RAG'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The paper uses Scientific Research, Financial Analysis, and Medical Literature Analysis as the three real-world domains that highlight the need for multimodal RAG capabilities.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:14:55] "POST /chat-query HTTP/1.1" 200 -
+
+[Q11] 'Why is multimodal RAG especially important in medical literature analysis'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the abstract, Medical Literature Analysis depends on radiological images, diagnostic charts, and clinical data tables, which contain life-critical information essential for accurate diagn'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:15:30] "POST /chat-query HTTP/1.1" 200 -
+
+[Q12] 'Why is multimodal RAG especially important in financial analysis'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the abstract, multimodal RAG is especially important in financial analysis because it relies heavily on market charts, correlation matrices, and performance tables that contain investment'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:16:11] "POST /chat-query HTTP/1.1" 200 -
+
+[Q13] 'What is "dual-graph construction" in RAG-Anything'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the provided context, dual-graph construction refers to a strategy employed by the RAG-ANYTHING framework that "elegantly bridges the gap between cross-modal understanding and fine-graine'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:16:39] "POST /chat-query HTTP/1.1" 200 -
+
+[Q14] 'What are the three core components of the RAG-Anything framework'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The three core components of the RAG-ANYTHING framework are: 1. Universal indexing for multimodal knowledge 2. Cross-modal adaptive retrieval 3. Knowledge-enhanced response generation'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:17:05] "POST /chat-query HTTP/1.1" 200 -
+
+[Q15] 'What is "cross-modal hybrid retrieval," and what two things does it combine'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the provided context, cross-modal hybrid retrieval combines: 1. Structural knowledge navigation 2. Semantic similarity matching.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:17:32] "POST /chat-query HTTP/1.1" 200 -
+
+[Q16] 'What does "Multimodal Knowledge Unification" do to raw input documents'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the document, Multimodal Knowledge Unification decomposes raw inputs into atomic knowledge units while preserving their structural context and semantic alignment. This means it breaks dow'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:34:57] "POST /chat-query HTTP/1.1" 200 -
+
+[Q17] "In the paper's formal notation, what does each atomic content unit consist o"
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'According to the provided context, each atomic content unit consists of a modality type tj in {text,image,table,equation,...} and its corresponding raw content xj.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:35:13] "POST /chat-query HTTP/1.1" 200 -
+
+[Q18] 'What is the exact accuracy or performance improvement percentage RAG-Anything achieved over baselines'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify the exact accuracy or performance improvement percentage RAG-Anything achieved over baselines.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:35:34] "POST /chat-query HTTP/1.1" 200 -
+
+[Q19] 'What date was this paper published, and in which journal'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify the publication date or journal of this paper.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:35:48] "POST /chat-query HTTP/1.1" 200 -
+
+[Q20] 'How many total experiments or benchmark documents were used in the evaluation'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify the exact number of experiments or benchmark documents used in the evaluation. However, it mentions that two challenging multimodal benchmarks (Doc Bench and MMLo'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 11:36:18] "POST /chat-query HTTP/1.1" 200 -
+
+--------------------------------------------------------------------------------
+TEST RUN 3 — Guardrail-Trigger Bait Questions (Q21-Q24)
+Document: RAG-Anything: All-in-One RAG Framework (arXiv:2510.12323)
+Captured: 15 Aug 2026, terminal log from Flask dev server (127.0.0.1:5000)
+Purpose: 4 additional questions specifically designed to invite the model to
+estimate/infer a specific number, in an attempt to trigger the guardrail's
+repair pass. None of the 24 total questions (Q1-Q24) triggered a repair.
+--------------------------------------------------------------------------------
+
+[Q21] 'How many years of RAG research led up to this paper, based on the introduction'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify how many years of RAG research led up to this paper.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 12:01:26] "POST /chat-query HTTP/1.1" 200 -
+
+[Q22] 'How many total evaluation questions were used across the DocBench and MMLongBench benchmarks combined'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify this.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 12:02:13] "POST /chat-query HTTP/1.1" 200 -
+
+[Q23] 'What model architecture or parameter size does RAG-Anything use'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify the exact model architecture or parameter size used in RAG-Anything.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 12:02:39] "POST /chat-query HTTP/1.1" 200 -
+
+[Q24] 'How much faster is RAG-Anything than text-only RAG, in percentage or multiplier terms'
+[RETRIEVE] chunks_selected: 4
+[GENERATE] raw_answer: 'The document does not clearly specify how much faster RAG-Anything is than text-only RAG.'
+[GUARDRAIL] no unsupported claims found, no repair triggered
+127.0.0.1 - - [15/Aug/2026 12:02:56] "POST /chat-query HTTP/1.1" 200 -
+
+================================================================================
+SUMMARY OF FINDINGS FROM THESE TRACES
+================================================================================
+- chunks_selected = 4 consistently across all 24 questions (chunk COUNT only;
+  chunk IDENTITY/section is not currently logged — a stated limitation).
+- [GUARDRAIL] repair pass did not trigger on any of the 24 questions, including
+  4 designed specifically to bait fabrication (Q21-Q24). The model consistently
+  self-refused via prompt-level grounding instructions before generation
+  completed, rather than the guardrail catching a fabrication after the fact.
+- One run-to-run inconsistency was observed on Q6 (see note above): a separate,
+  non-terminal-logged chat UI session produced a fabricated answer to the same
+  question that this terminal-logged run correctly refused.
+================================================================================
