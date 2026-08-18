@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SciAgent — Discovery Dashboard</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/home" class="nav-brand">
+        <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"
+          height="28">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+        <span class="brand-name">SciAgent</span>
+      </a>
+      <ul class="nav-links">
+        <li>
+          <a href="/home" class="nav-link active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="/summary" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Summary
+          </a>
+        </li>
+        <li>
+          <a href="/chat" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Agent Chat
+          </a>
+        </li>
+        <li>
+          <a href="/" class="nav-link nav-logout">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Exit
+          </a>
+        </li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="min-height: 60vh;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Discovery Mode Active</span>
+      <h1 class="hero-title">Initialize Discovery Pipeline</h1>
+      <p class="hero-subtitle">
+        Upload your scientific dataset or research paper to begin the autonomous evidence extraction process.
+      </p>
+      <a href="#upload-section" class="hero-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="17 8 12 3 7 8" />
+          <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+        Begin Upload
+      </a>
+    </div>
+  </section>
+
+  <!-- MAIN APP -->
+  <div class="app-wrapper" id="upload-section">
+    <main class="main-content">
+      <div class="content-container">
+
+        <!-- Instructions -->
+        <section class="card info-card" style="margin-bottom: 2rem;">
+          <div class="card-header">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22"
+              height="22">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <h2>Protocol Overview</h2>
+          </div>
+          <div class="card-body">
+            <p>Our autonomous agent processes PDF research papers using RAG (Retrieval-Augmented Generation). Once
+              uploaded, you can generate evidence-grounded summaries or interact with the agent to probe deeper into
+              specific scientific claims.</p>
+          </div>
+        </section>
+
+        <!-- Document Input -->
+        <section class="card input-card">
+          <div class="card-header">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22"
+              height="22">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <h2>Data Ingestion</h2>
+          </div>
+          <div class="card-body">
+
+            <!-- File Upload -->
+            <div class="input-group">
+              <label class="input-label"
+                style="display: block; margin-bottom: 1rem; font-weight: 600; color: var(--accent-primary);">
+                Select Scientific Document (PDF)
+              </label>
+              <div class="file-upload-wrapper">
+                <input type="file" id="pdf-upload" accept=".pdf" class="file-input" />
+                <div class="file-upload-display" id="file-drop-zone">
+                  <div class="upload-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48"
+                      style="color: var(--accent-primary);">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <line x1="12" y1="18" x2="12" y2="12" />
+                      <line x1="9" y1="15" x2="15" y2="15" />
+                    </svg>
+                  </div>
+                  <div class="upload-text-wrap">
+                    <span class="upload-primary-text">Ingest Research Data</span>
+                    <span class="upload-secondary-text">PDF format required · Max 16MB</span>
+                  </div>
+                </div>
+              </div>
+              <div class="file-info" id="file-info"
+                style="display:none; margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                <div class="file-info-content" style="display: flex; align-items: center; gap: 1rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"
+                    style="color: var(--success);">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <div class="file-info-text">
+                    <strong style="display:block;">Sequence Ready</strong>
+                    <span id="file-name" style="font-size: 0.9rem; color: var(--text-secondary);"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="error-message" id="upload-feedback" role="alert"
+                style="display:none; margin-top: 1rem; color: var(--error);"></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Action choice -->
+        <div class="action-choice-card" style="margin-top: 2rem; text-align: center;">
+          <p class="action-choice-label" style="margin-bottom: 1.5rem; font-size: 1.1rem;">Select Pipeline Operation:
+          </p>
+          <div class="action-choice-buttons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <button class="hero-cta" id="go-summary-btn" style="width: 100%; justify-content: center; padding: 1.5rem;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+                <strong>Generate Evidence</strong>
+              </div>
+            </button>
+
+            <button class="hero-cta" id="go-chat-btn" style="width: 100%; justify-content: center; padding: 1.5rem;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                <strong>Probing Agent</strong>
+              </div>
+            </button>
+          </div>
+          <div class="action-choice-hint" id="action-hint"
+            style="display:none; margin-top: 1rem; color: var(--warning); justify-content: center; align-items: center; gap: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            </svg>
+            Please upload a dataset before proceeding.
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 SciAgent · Evidence-Grounded Scientific Discovery</p>
+  </footer>
+
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('open');
+      this.classList.toggle('active');
+    });
+    document.querySelector('.hero-cta').addEventListener('click', function (e) {
+      if (this.getAttribute('href') === '#upload-section') {
+        e.preventDefault();
+        document.getElementById('upload-section').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    const pdfUpload = document.getElementById('pdf-upload');
+    const fileInfo = document.getElementById('file-info');
+    const fileNameEl = document.getElementById('file-name');
+    const uploadFeedback = document.getElementById('upload-feedback');
+    const MAX_PDF_BYTES = 16 * 1024 * 1024;
+
+    function setUploadError(msg) {
+      if (uploadFeedback) {
+        uploadFeedback.textContent = msg;
+        uploadFeedback.style.display = 'block';
+      }
+    }
+    function clearUploadError() {
+      if (uploadFeedback) {
+        uploadFeedback.textContent = '';
+        uploadFeedback.style.display = 'none';
+      }
+    }
+
+    function isPdfFile(file) {
+      if (!file) return false;
+      if (file.type === 'application/pdf') return true;
+      var n = (file.name || '').toLowerCase();
+      return n.length > 4 && n.slice(-4) === '.pdf';
+    }
+
+    if (pdfUpload) {
+      pdfUpload.addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        clearUploadError();
+        if (!file) {
+          if (fileInfo) fileInfo.style.display = 'none';
+          return;
+        }
+        if (!isPdfFile(file)) {
+          setUploadError('Invalid format. Please provide a PDF dataset.');
+          pdfUpload.value = '';
+          if (fileInfo) fileInfo.style.display = 'none';
+          return;
+        }
+        if (file.size > MAX_PDF_BYTES) {
+          setUploadError('Dataset exceeds 16MB limit.');
+          pdfUpload.value = '';
+          if (fileInfo) fileInfo.style.display = 'none';
+          return;
+        }
+        if (fileNameEl) fileNameEl.textContent = file.name + ' (' + (file.size / 1024).toFixed(2) + ' KB)';
+        if (fileInfo) fileInfo.style.display = 'block';
+      });
+    }
+
+    function readPdfAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function getSelectedPdf() {
+      return pdfUpload && pdfUpload.files[0] ? pdfUpload.files[0] : null;
+    }
+
+    async function navigateTo(destination) {
+      const hint = document.getElementById('action-hint');
+      const file = getSelectedPdf();
+      if (!file) {
+        hint.style.display = 'flex';
+        hint.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+      }
+      hint.style.display = 'none';
+      try {
+        var b64 = await readPdfAsBase64(file);
+        try {
+          sessionStorage.setItem('lexsumm_doc', JSON.stringify({ type: 'pdf', data: b64, fileName: file.name, fileSize: file.size }));
+        } catch (quotaErr) {
+          setUploadError('Document too large for session storage. Try a smaller sample.');
+          return;
+        }
+      } catch (err) {
+        setUploadError('Ingestion failed. Please retry.');
+        return;
+      }
+      window.location.href = destination;
+    }
+
+    document.getElementById('go-summary-btn').addEventListener('click', () => navigateTo('/summary'));
+    document.getElementById('go-chat-btn').addEventListener('click', () => navigateTo('/chat'));
+  </script>
+</body>
+
+</html>

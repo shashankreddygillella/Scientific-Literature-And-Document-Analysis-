@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SciAgent — Probing Agent</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="chat-page">
+
+  <!-- SIDEBAR -->
+  <aside class="chat-sidebar" id="chat-sidebar">
+    <div class="sidebar-header"
+      style="padding: 1.5rem; border-bottom: 1px solid var(--glass-border); background: var(--bg-secondary);">
+      <a href="/home" class="sidebar-brand">
+        <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24"
+          height="24">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+        <span class="brand-name">SciAgent</span>
+      </a>
+    </div>
+
+    <div class="sidebar-doc-info"
+      style="padding: 0.5rem 1.5rem; background: var(--bg-tertiary); display: flex; align-items: center; gap: 0.75rem;">
+      <div class="sidebar-doc-icon"
+        style="color: var(--accent-primary); flex-shrink: 0; display: flex; align-items: center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+      </div>
+      <div style="min-width: 0;">
+        <p class="sidebar-doc-label"
+          style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2px;">Active
+          Dataset</p>
+        <p class="sidebar-doc-name" id="sidebar-doc-name"
+          style="font-weight: 600; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">
+          No dataset loaded</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section-label"
+      style="padding: 0.75rem 1.5rem 0.5rem; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+      Inquiry History</div>
+    <div class="sidebar-chat-list" id="conversation-list" style="flex: 1; overflow-y: auto;"></div>
+
+    <div style="padding: 0.5rem 1rem;">
+      <button type="button" class="sidebar-chat-item" id="new-conversation-sidebar"
+        style="width: 100%; margin: 0; padding: 0.6rem 1rem; background: var(--accent-glow); border: 1px solid var(--accent-primary); color: var(--accent-primary); border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.85rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        <span>New Inquiry</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer" style="padding: 0.5rem; border-top: 1px solid var(--glass-border);">
+      <a href="/home" class="sidebar-nav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"
+          style="color: var(--accent-primary);">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="/summary" class="sidebar-nav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"
+          style="color: var(--accent-primary);">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        <span>Summary</span>
+      </a>
+      <a href="/" class="sidebar-nav-btn sidebar-logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"
+          style="color: var(--error);">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        <span>Exit</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT AREA -->
+  <div class="chat-main" id="chat-main">
+
+    <!-- Top bar -->
+    <header class="chat-topbar"
+      style="height: 60px; padding: 0 1.5rem; display: flex; align-items: center; border-bottom: 1px solid var(--glass-border); background: #ffffff;">
+      <button class="sidebar-toggle-btn" id="sidebar-toggle"
+        style="background: none; border: none; color: var(--text-primary); cursor: pointer;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="chat-topbar-title" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"
+          style="color: var(--accent-primary)">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <span style="font-weight: 600;">Autonomous Probing Agent</span>
+      </div>
+    </header>
+
+    <!-- No doc warning -->
+    <div class="chat-no-doc" id="chat-no-doc"
+      style="display:none; flex: 1; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64"
+        style="color: var(--text-muted); margin-bottom: 1rem;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+      </svg>
+      <h3>System Standby</h3>
+      <p style="color: var(--text-secondary);">Please initialize a dataset to activate the probing agent.</p>
+      <a href="/home" class="btn-primary" style="margin-top: 1.5rem;">Initialize Dataset</a>
+    </div>
+
+    <div class="chat-doc-status" id="chat-doc-status"
+      style="padding: 0.5rem 1.5rem; font-size: 0.8rem; background: var(--bg-tertiary); color: var(--accent-primary); display: none;">
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chat-messages" style="flex: 1; padding: 2rem; overflow-y: auto;"></div>
+
+    <!-- Input bar -->
+    <div class="chat-input-bar">
+      <div class="chat-input-wrap">
+        <textarea id="chat-input" class="chat-textarea" placeholder="Enter research inquiry…" rows="1"></textarea>
+        <button class="chat-send-btn" id="chat-send-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+        </button>
+      </div>
+      <p class="chat-input-hint">Protocol: Press <kbd>Enter</kbd> to execute inquiry.</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    let _chatDoc = null;
+    let _chatHistory = [];
+    let _docReady = false;
+    let _activeConversationId = null;
+    let _conversationList = [];
+
+    function setDocStatus(msg, show) {
+      const el = document.getElementById('chat-doc-status');
+      if (!el) return;
+      el.textContent = msg || '';
+      el.style.display = show ? 'block' : 'none';
+    }
+
+    function renderWelcome() {
+      const wrap = document.getElementById('chat-messages');
+      wrap.innerHTML = `
+        <div class="chat-msg chat-msg--assistant">
+          <div class="chat-msg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="chat-msg-bubble">
+            <p><strong>System Online.</strong> I have ingested the research document. You may now execute queries regarding specific evidence, scientific claims, or experimental data points. How shall we proceed with the discovery?</p>
+          </div>
+        </div>`;
+      wrap.scrollTop = wrap.scrollHeight;
+    }
+
+    async function initializeConversationState() {
+      try {
+        await fetchConversations();
+        if (_conversationList.length > 0) {
+          await loadConversation(_conversationList[0].id);
+        } else {
+          await startNewInquiry();
+        }
+      } catch (e) {
+        setDocStatus(e.message, true);
+      }
+    }
+
+    async function startNewInquiry() {
+      const cid = await createNewConversation('');
+      _activeConversationId = cid;
+      _chatHistory = [];
+      const wrap = document.getElementById('chat-messages');
+      wrap.innerHTML = '';
+      renderWelcome();
+      await fetchConversations();
+      renderConversationList();
+    }
+
+    document.getElementById('new-conversation-sidebar').addEventListener('click', startNewInquiry);
+
+    (async function initChatDoc() {
+      const raw = sessionStorage.getItem('lexsumm_doc');
+      const noDoc = document.getElementById('chat-no-doc');
+      const msgs = document.getElementById('chat-messages');
+      const nameEl = document.getElementById('sidebar-doc-name');
+      const inputBar = document.querySelector('.chat-input-bar');
+
+      if (!raw) {
+        noDoc.style.display = 'flex';
+        msgs.style.display = 'none';
+        inputBar.style.display = 'none';
+        return;
+      }
+      _chatDoc = JSON.parse(raw);
+      nameEl.textContent = _chatDoc.fileName || 'Scientific Dataset';
+
+      if (_chatDoc.type === 'pdf') {
+        setDocStatus('Analyzing dataset structure…', true);
+        const res = await fetch('/chat-prepare', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pdf_data: _chatDoc.data })
+        });
+        const data = await res.json();
+        if (data.success) {
+          _chatDoc.extractedText = data.extracted_text;
+          _docReady = true;
+          setDocStatus('', false);
+          await initializeConversationState();
+        }
+      }
+    })();
+
+    const sidebar = document.getElementById('chat-sidebar');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+
+    const chatInput = document.getElementById('chat-input');
+    chatInput.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 160) + 'px';
+    });
+
+    function appendMsg(role, text) {
+      const wrap = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg chat-msg--' + role;
+
+      const icon = role === 'user'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+
+      div.innerHTML = `
+        <div class="chat-msg-icon">${icon}</div>
+        <div class="chat-msg-bubble"><p>${text.replace(/\n/g, '<br>')}</p></div>
+      `;
+      wrap.appendChild(div);
+      wrap.scrollTop = wrap.scrollHeight;
+    }
+
+    function showLoading() {
+      const wrap = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg chat-msg--assistant chat-msg--loading';
+      div.id = 'chat-loading-bubble';
+      div.innerHTML = `
+        <div class="chat-msg-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="chat-msg-bubble">
+          <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+      `;
+      wrap.appendChild(div);
+      wrap.scrollTop = wrap.scrollHeight;
+    }
+
+    function hideLoading() {
+      const el = document.getElementById('chat-loading-bubble');
+      if (el) el.remove();
+    }
+
+    async function sendMessage() {
+      const q = chatInput.value.trim();
+      if (!q || !_docReady) return;
+      chatInput.value = '';
+      appendMsg('user', q);
+      _chatHistory.push({ role: 'user', content: q });
+
+      showLoading();
+
+      try {
+        const res = await fetch('/chat-query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: q,
+            document_text: _chatDoc.extractedText || _chatDoc.text,
+            history: _chatHistory.slice(-5),
+            conversation_id: _activeConversationId
+          })
+        });
+        const data = await res.json();
+        hideLoading();
+        appendMsg('assistant', data.answer || 'Protocol error in inquiry.');
+        _chatHistory.push({ role: 'assistant', content: data.answer });
+      } catch (e) {
+        hideLoading();
+        appendMsg('assistant', 'Connection error. Please check server status.');
+      }
+    }
+
+    document.getElementById('chat-send-btn').addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    async function fetchConversations() {
+      const res = await fetch('/chat-history/conversations');
+      const data = await res.json();
+      _conversationList = data.conversations || [];
+    }
+
+    async function loadConversation(id) {
+      const res = await fetch(`/chat-history/conversations/${id}/messages`);
+      const data = await res.json();
+      _activeConversationId = id;
+      const wrap = document.getElementById('chat-messages');
+      wrap.innerHTML = '';
+      (data.messages || []).forEach(m => appendMsg(m.role, m.content));
+      if (!data.messages?.length) renderWelcome();
+      renderConversationList();
+    }
+
+    function renderConversationList() {
+      const list = document.getElementById('conversation-list');
+      list.innerHTML = _conversationList.map(c => `
+        <div class="sidebar-chat-item-wrap">
+          <button class="sidebar-chat-item ${c.id === _activeConversationId ? 'active' : ''}" onclick="loadConversation('${c.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; opacity: 0.7;">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.title || 'Inquiry Sequence'}</span>
+          </button>
+          <button class="delete-conv-btn" onclick="deleteConversation(event, '${c.id}')" title="Delete Inquiry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteConversation(e, id) {
+      if (e) e.stopPropagation();
+      if (!confirm('Are you sure you want to delete this inquiry sequence?')) return;
+
+      try {
+        const res = await fetch(`/chat-history/conversations/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          if (id == _activeConversationId) {
+            await startNewInquiry();
+          } else {
+            await fetchConversations();
+            renderConversationList();
+          }
+        }
+      } catch (err) {
+        console.error('Delete failed:', err);
+      }
+    }
+
+    async function createNewConversation(q) {
+      const res = await fetch('/chat-history/conversations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ first_question: q })
+      });
+      const data = await res.json();
+      return data.conversation_id;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+RAG Driven Autonomous AI Agent for Evidence Grounded Scientific Discovery Workflow:
+====================================================================================
+
+1. Application Entry Points:
+   - Summarization API: `/summarize-pdf`
+   - Chat / RAG QA API: `/chat-query`
+   - Chat history APIs persist conversations and messages in SQLite-backed tables.
+
+2. Document Intake:
+   - Accept document input as:
+     - uploaded PDF file, or
+     - already available raw document text, or
+     - base64 / data-URL PDF payload for chat
+   - Reject empty or invalid PDF uploads early.
+
+3. PDF Text Extraction:
+   - Read PDF bytes once and try multiple extractors in order:
+     - PyMuPDF structured extraction
+     - pdfplumber structured extraction
+     - pdfminer.six
+     - PyPDF2
+     - OCR fallback with `pdf2image + pytesseract` if needed
+   - Clean each candidate extraction and score extraction quality.
+   - Select the best extraction candidate.
+   - Print the first 5000 characters of the chosen extracted text for debugging.
+
+4. Shared Text Cleaning / OCR Repair:
+   - Normalize whitespace and layout noise.
+   - Repair OCR-spaced all-caps words such as:
+     - `I NTRODUCTION` -> `INTRODUCTION`
+     - `L OW-RANK` -> `LOW-RANK`
+   - Restore missing spaces in OCR-fused English tokens when possible.
+   - Preserve line structure where useful for heading-aware parsing.
+
+5. Summarization Pipeline:
+   - Detect input language.
+   - Extractive sentence selection:
+     - Primary option: MiniLM-based sentence ranking (`sentence-transformers/all-MiniLM-L6-v2`)
+     - Fallback option: TextRank
+   - Abstractive summarization backends:
+     - Pegasus: `google/pegasus-xsum`
+     - Ollama summarization path: `gemma3:1b`
+   - Optional bilingual post-processing / translation for summary display.
+   - Return summary text, extracted sentences, explanation scores, and metadata.
+
+6. RAG Front-Matter and Structural Parsing:
+   - Build chunk records from cleaned document text.
+   - Detect and preserve front matter:
+     - title
+     - abstract
+     - introduction
+   - Handle OCR-damaged headings and inline heading/body patterns.
+   - Classify section kinds using normalized heading aliases.
+
+7. Chunk Construction:
+   - Use sentence-preserving chunk splitting.
+   - Use clause-aware splitting for numbered sections when present.
+   - Preserve section boundaries for grounded QA.
+   - Avoid dropping front-matter chunks during:
+     - low-value filtering
+     - table-noise filtering
+     - deduplication
+
+8. Reference / Bibliography Filtering:
+   - Detect references by:
+     - heading classification
+     - citation-heavy chunk patterns
+   - Exclude reference-like chunks from FAISS indexing.
+   - Print skipped reference chunks for debugging.
+
+9. FAISS Vector Indexing:
+   - Create a document hash using the current RAG index version.
+   - Persist semantic embeddings under `.faiss_scientific_rag/`.
+   - Reuse existing index files when available for the same document/version.
+   - Embed indexable chunks with `sentence-transformers/all-MiniLM-L6-v2`.
+   - Store both chunk text and metadata in FAISS sidecar JSON.
+
+10. Retrieval-Time Query Routing:
+   - Detect query intent:
+     - summary
+     - clause / structured
+     - factoid / general
+   - Summary questions trigger front-matter prioritization.
+   - Clause-oriented questions boost clause-like chunks.
+
+11. Semantic-First Retrieval:
+   - Retrieve candidates from FAISS first using normalized query embeddings.
+   - Use TF-IDF char-ngram similarity as a secondary lexical signal.
+   - Re-rank with combined scoring:
+     - semantic score
+     - TF-IDF score
+     - section boosts / penalties
+   - Apply MMR-like diversity selection.
+   - Enforce context budget with compact chunk selection.
+
+12. Summary-Question Retrieval Behavior:
+   - For document-purpose / summary-style questions, always prepend:
+     - title chunk
+     - abstract chunk(s)
+     - introduction chunk
+   - Optionally include conclusion when present.
+   - This happens before final context assembly for QA.
+
+13. QA Prompt Construction:
+   - Build grounded system/user messages from retrieved context.
+   - Instruct the model to:
+     - use only provided context
+     - avoid outside knowledge
+     - answer confidently when title / abstract / introduction clearly support the answer
+     - use uncertainty fallback only when evidence is missing, weak, or contradictory
+   - Local QA generation model via Ollama:
+     - `llama3.2:3b`
+
+14. Post-Generation Guardrails:
+   - Detect unsupported factual tokens such as numbers, dates, currency, and durations.
+   - Run a repair pass only when unsupported risky tokens are found.
+   - If the answer is overly defensive but the retrieved context strongly supports an answer,
+     run a second rewrite pass to make the final answer more direct while staying grounded.
+   - Restore OCR/fused-word spacing artifacts in the final answer text.
+
+15. Final API Response:
+   - Summarization endpoint returns summary text, extracted sentences, explanation data, and metadata.
+   - Chat endpoint returns grounded QA answers and persists user/assistant messages to conversation history.
+   - Both flows return explicit JSON error messages when extraction, summarization, retrieval, or generation fails.

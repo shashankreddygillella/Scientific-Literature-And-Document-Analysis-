@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SciAgent — Evidence Extraction</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/home" class="nav-brand">
+        <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"
+          height="28">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+        <span class="brand-name">SciAgent</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/home" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>Dashboard
+          </a></li>
+        <li><a href="/summary" class="nav-link active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>Summary
+          </a></li>
+        <li><a href="/chat" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>Agent Chat
+          </a></li>
+        <li><a href="/" class="nav-link nav-logout">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>Exit
+          </a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero hero--summary" style="min-height: 50vh;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Autonomous Analysis</span>
+      <h1 class="hero-title">Evidence Extraction<br />& Grounding</h1>
+      <p class="hero-subtitle">Our agent is ready to distill complex research data into verifiable evidence and grounded
+        insights.</p>
+      <a href="#summary-section" class="hero-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Execute Analysis
+      </a>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="app-wrapper" id="summary-section">
+    <main class="main-content">
+      <div class="content-container">
+
+        <!-- Doc preview banner -->
+        <div class="doc-preview-banner" id="doc-preview-banner"
+          style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"
+            style="color: var(--accent-primary);">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          <span id="doc-preview-label" style="font-weight: 600;">Loading dataset…</span>
+          <a href="/home" class="doc-preview-change"
+            style="margin-left: auto; font-size: 0.9rem; text-decoration: underline;">Change Dataset</a>
+        </div>
+        <div class="error-message" id="no-doc-warning" style="display:none; color: var(--error); margin-bottom: 2rem;">
+          No dataset found. <a href="/home" style="color:inherit;font-weight:700;text-decoration:underline;">Return to
+            dashboard.</a>
+        </div>
+
+        <!-- Configuration -->
+        <section class="card options-card" style="margin-bottom: 2rem;">
+          <div class="card-header">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22"
+              height="22">
+              <path d="M12 3v19M5 8l7-5 7 5M5 16l7 5 7-5" />
+            </svg>
+            <h2>Analysis Parameters</h2>
+          </div>
+          <div class="card-body">
+            <div class="options-grid">
+              <div class="option-item">
+                <label for="top-k" class="option-label"
+                  style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Evidence
+                  Granularity</label>
+                <select id="top-k" class="select-input"
+                  style="width: 100%; padding: 0.75rem; background: var(--bg-primary); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: var(--radius-sm);">
+                  <option value="8">Standard (8 key points)</option>
+                  <option value="10" selected>Detailed (10 key points)</option>
+                  <option value="12">Deep (12 key points)</option>
+                  <option value="15">Comprehensive (15 key points)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <button class="btn-primary" id="summarize-btn" onclick="summarize()"
+          style="width: 100%; margin-bottom: 2rem; padding: 1.25rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+          Initialize Extraction Sequence
+        </button>
+
+        <div class="loading-state" id="loading"
+          style="display:none; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+          <div class="spinner"
+            style="width: 40px; height: 40px; border: 4px solid var(--glass-border); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite;">
+          </div>
+          <p class="loading-text">Agent is processing research data… Analyzing evidence grounding.</p>
+        </div>
+        <style>
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        </style>
+        <div class="error-message" id="error" style="display:none; color: var(--error); margin-bottom: 2rem;"></div>
+
+        <!-- Results -->
+        <div class="results-container" id="results" style="display:none; flex-direction: column; gap: 2rem;">
+
+          <section class="card result-card" id="extracted-text-section">
+            <div class="card-header">
+              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <h2>Ingested Raw Data</h2>
+            </div>
+            <div class="card-body">
+              <div class="content-box" id="extracted-text-box"
+                style="max-height: 300px; overflow-y: auto; background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85rem; border: 1px solid var(--glass-border);">
+              </div>
+            </div>
+          </section>
+
+          <section class="card result-card summary-card">
+            <div class="card-header">
+              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              <h2>Grounded Summary</h2>
+            </div>
+            <div class="card-body">
+              <div class="summary-content" id="summary-box">
+                <em class="placeholder-text">Analysis output pending…</em>
+              </div>
+            </div>
+          </section>
+
+          <section class="card stats-card">
+            <div class="card-header">
+              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+                <line x1="2" y1="20" x2="22" y2="20" />
+              </svg>
+              <h2>Processing Statistics</h2>
+            </div>
+            <div class="card-body">
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value" id="original-length">0</div>
+                  <div class="stat-label">Input Tokens</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="summary-length">0</div>
+                  <div class="stat-label">Evidence Tokens</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="compression-ratio">0%</div>
+                  <div class="stat-label">Optimization</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card result-card">
+            <div class="card-header">
+              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <h2>Key Scientific Evidence</h2>
+            </div>
+            <div class="card-body">
+              <div class="sentences-container" id="extracted-sentences">
+                <p class="empty-state">Evidence extraction not yet initialized.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card result-card explanation-card" id="explanation-section" style="display:none;">
+            <div class="card-header">
+              <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+              <h2>Evidence Verification (LIME & SHAP)</h2>
+            </div>
+            <div class="card-body">
+              <div class="tabs-container" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                <button class="tab-button active" onclick="showExplanationTab('lime')"
+                  style="flex: 1; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--glass-border); color: var(--text-primary); cursor: pointer;">LIME
+                  Verification</button>
+                <button class="tab-button" onclick="showExplanationTab('shap')"
+                  style="flex: 1; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--glass-border); color: var(--text-primary); cursor: pointer;">SHAP
+                  Attribution</button>
+              </div>
+              <div id="lime-content" class="tab-content active">
+                <div class="chart-wrapper"><canvas id="lime-chart"></canvas></div>
+                <div class="sentence-list-container" id="lime-sentences"></div>
+              </div>
+              <div id="shap-content" class="tab-content" style="display:none;">
+                <div class="chart-wrapper"><canvas id="shap-chart"></canvas></div>
+                <div class="sentence-list-container" id="shap-sentences"></div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 SciAgent · Evidence-Grounded Scientific Discovery</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('open');
+      this.classList.toggle('active');
+    });
+    document.querySelector('.hero-cta').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('summary-section').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    let _storedDoc = null;
+    (function initDoc() {
+      const raw = sessionStorage.getItem('lexsumm_doc');
+      const banner = document.getElementById('doc-preview-banner');
+      const label = document.getElementById('doc-preview-label');
+      const warn = document.getElementById('no-doc-warning');
+      if (!raw) { banner.style.display = 'none'; warn.style.display = 'block'; document.getElementById('summarize-btn').disabled = true; return; }
+      try { _storedDoc = JSON.parse(raw); } catch (e) { banner.style.display = 'none'; warn.style.display = 'block'; document.getElementById('summarize-btn').disabled = true; return; }
+      label.textContent = _storedDoc.type === 'pdf'
+        ? (_storedDoc.fileName || 'Uploaded PDF')
+        : ((_storedDoc.text || '').substring(0, 80).trim() + '…');
+    })();
+
+    async function summarize() {
+      if (!_storedDoc) { document.getElementById('no-doc-warning').style.display = 'block'; return; }
+      const topK = parseInt(document.getElementById('top-k').value);
+      document.getElementById('loading').style.display = 'flex';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('error').style.display = 'none';
+      document.getElementById('summarize-btn').disabled = true;
+      try {
+        let response;
+        if (_storedDoc.type === 'pdf') {
+          const base64 = _storedDoc.data.split(',')[1];
+          const binary = atob(base64);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+          const blob = new Blob([bytes], { type: 'application/pdf' });
+          const fd = new FormData();
+          fd.append('pdf', blob, _storedDoc.fileName || 'document.pdf');
+          fd.append('top_k_sent', topK);
+          fd.append('use_minilm', true);
+          response = await fetch('/summarize-pdf', { method: 'POST', body: fd });
+        } else {
+          response = await fetch('/summarize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: _storedDoc.text, top_k_sent: topK, use_minilm: true })
+          });
+        }
+        const data = await response.json();
+        if (data.success) {
+          const extSec = document.getElementById('extracted-text-section');
+          if (data.extracted_text && _storedDoc.type === 'pdf') {
+            document.getElementById('extracted-text-box').textContent = data.extracted_text;
+            extSec.style.display = 'block';
+          } else { extSec.style.display = 'none'; }
+
+          const sb = document.getElementById('summary-box');
+          sb.innerHTML = '';
+          const dt = (data.summary_display && data.summary_display.trim()) ? data.summary_display : data.summary;
+          sb.textContent = (dt && dt.trim()) ? dt : 'No summary was generated. Please try again.';
+
+          document.getElementById('original-length').textContent = (data.original_length || 0).toLocaleString();
+          document.getElementById('summary-length').textContent = (data.summary_length || 0).toLocaleString();
+          document.getElementById('compression-ratio').textContent = data.compression_ratio || '0%';
+
+          const sd = document.getElementById('extracted-sentences');
+          if (data.extracted_sentences && data.extracted_sentences.length > 0) {
+            sd.innerHTML = '';
+            data.extracted_sentences.forEach((s, idx) => {
+              const div = document.createElement('div');
+              div.className = 'evidence-point';
+              div.innerHTML = `<strong>Finding ${idx + 1}:</strong> <p style="margin-top: 5px; margin-bottom: 0;">${s}</p>`;
+              sd.appendChild(div);
+            });
+          } else { sd.innerHTML = '<p class="empty-state">No evidence points extracted.</p>'; }
+
+          document.getElementById('results').style.display = 'flex';
+          if (data.explanations) displayExplanations(data.explanations);
+          else document.getElementById('explanation-section').style.display = 'none';
+          document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else { showError(data.error || 'An error occurred during extraction.'); }
+      } catch (err) { showError('Network error: ' + err.message); }
+      finally {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('summarize-btn').disabled = false;
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error');
+      el.textContent = 'Protocol Error: ' + msg;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showExplanationTab(tab) {
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+      if (tab === 'lime') {
+        document.querySelector('button[onclick*="lime"]').classList.add('active');
+        document.getElementById('lime-content').style.display = 'block';
+      } else {
+        document.querySelector('button[onclick*="shap"]').classList.add('active');
+        document.getElementById('shap-content').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+
+</html>

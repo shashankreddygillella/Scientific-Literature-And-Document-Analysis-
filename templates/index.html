@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SciAgent — Scientific Discovery AI</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28"
+          height="28">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+        <span class="brand-name">SciAgent</span>
+      </a>
+      <ul class="nav-links">
+        <li>
+          <a href="/" class="nav-link active">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg>
+            Explorer
+          </a>
+        </li>
+        <li>
+          <a href="/logon" class="nav-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+            Initialize
+          </a>
+        </li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Pioneering Scientific Innovation</span>
+      <h1 class="hero-title">Scientific literature <br /> document intelligence </h1>
+      <p class="hero-subtitle">
+        SciAgent leverages RAG-driven autonomous intelligence to analyze complex research data, extract grounded
+        evidence, and accelerate scientific breakthroughs.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/logon" class="hero-cta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M12 2v20M2 12h20M12 2l10 10-10 10L2 12z" />
+          </svg>
+          Launch Agent
+        </a>
+        <a href="#about" class="hero-cta" style="background: var(--bg-secondary);">
+          Learn More
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ABOUT SECTION 1 -->
+  <section class="landing-section" id="about" style="background: var(--bg-primary); padding: 8rem 2rem;">
+    <div class="landing-inner"
+      style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+      <div class="landing-text">
+        <span class="landing-tag"
+          style="color: var(--accent-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">The
+          Science of AI</span>
+        <h2 class="landing-heading" style="font-size: 3rem; margin: 1rem 0;">Autonomous Intelligence for Researchers
+        </h2>
+        <p class="landing-body" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          SciAgent is not just a summarizer; it is a specialized agent designed to navigate the vast landscape of
+          scientific literature. By combining Retrieval-Augmented Generation (RAG) with evidence-grounding mechanisms,
+          it ensures every insight is backed by verified data.
+        </p>
+        <p class="landing-body" style="color: var(--text-secondary);">
+          Our platform understands the nuances of chemical formulas, biological pathways, and physical constants,
+          providing researchers with a high-fidelity partner in discovery.
+        </p>
+      </div>
+      <div class="landing-visual">
+        <div class="landing-feature-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div class="card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"
+              style="color: var(--accent-primary);">
+              <path d="M4.5 16.5c-1.5 1.26-2 3.43-2 3.43s2.17-.5 3.43-2c1.26-1.5 1.5-3.5 1.5-3.5s-2 .24-3.5 1.5z" />
+              <path d="M8.5 12.5c-1.5 1.26-2 3.43-2 3.43s2.17-.5 3.43-2c1.26-1.5 1.5-3.5 1.5-3.5s-2 .24-3.5 1.5z" />
+              <path d="M12.5 8.5c-1.5 1.26-2 3.43-2 3.43s2.17-.5 3.43-2c1.26-1.5 1.5-3.5 1.5-3.5s-2 .24-3.5 1.5z" />
+              <path d="M16.5 4.5c-1.5 1.26-2 3.43-2 3.43s2.17-.5 3.43-2c1.26-1.5 1.5-3.5 1.5-3.5s-2 .24-3.5 1.5z" />
+              <path d="M11 13l6-6" />
+              <path d="M9 11l6-6" />
+              <path d="M13 15l6-6" />
+            </svg>
+            <h4 style="margin: 1rem 0;">Evidence Grounding</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">Verified citations for every claim made by the
+              AI agent.</p>
+          </div>
+          <div class="card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"
+              style="color: var(--accent-primary);">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <h4 style="margin: 1rem 0;">Deep Insights</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">Autonomous cross-referencing across multi-modal
+              datasets.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="landing-cta-strip"
+    style="background: var(--bg-secondary); padding: 6rem 2rem; text-align: center; border-top: 1px solid var(--glass-border);">
+    <div class="landing-cta-inner" style="max-width: 800px; margin: 0 auto;">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Accelerate Your Research Today</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 2.5rem;">Join the future of scientific discovery with our
+        RAG-driven AI partner.</p>
+      <div class="landing-cta-btns" style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/logon" class="btn-primary">Get Started</a>
+        <a href="/login" class="hero-cta">Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 SciAgent · Evidence-Grounded Scientific Discovery</p>
+  </footer>
+
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.toggle('open');
+      this.classList.toggle('active');
+    });
+    document.querySelector('.hero-scroll-hint').addEventListener('click', () => {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+
+</html>
