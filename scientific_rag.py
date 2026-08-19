@@ -1751,6 +1751,9 @@ def rag_answer(
     relevant = [_record_text(record) for record in final_records]
     print(f"[RETRIEVE] question: {q!r}")
     print(f"[RETRIEVE] chunks_selected: {len(final_records)}")
+    for i, record in enumerate(final_records, 1):
+        preview = _record_text(record)[:80].replace("\n", " ")
+        print(f"[RETRIEVE]   rank {i}: preview={preview!r}")
 
     context = "\n\n---\n\n".join(relevant)
     if len(context) > MAX_CONTEXT_CHARS:
